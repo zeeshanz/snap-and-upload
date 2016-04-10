@@ -1,4 +1,4 @@
-# Zeeshanz Snap-And-Upload Module
+# Zeeshanz Snap-Crop-Upload Module
 
 To make life easier for anyone wanting to easily take photos, crop, and upload to their server, I decided to write this module. You can integrate it into your app, and call it just using one line of code. This module will open a dialog box allowing you to take a photo, or select one from your library, and then it'll crop and upload to your server. There are a few good options to control the functionality of this module which I have explained below. Please note that the min SDK version is 21.
 
@@ -19,9 +19,9 @@ Import the module into your main project and add it as a dependency of your main
 1. Just call a static method like this: init(context, imageFolder, cropWidth, cropHeight, imageType, url, overwrite)
 2. Or call it with a callback listener like the following example:
 
-SnapAndUpload mListener;
-mListener = new SnapAndUpload();
-  mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapAndUploadListener() {
+SnapCropUpload mListener;
+mListener = new SnapCropUpload();
+  mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
     @Override
     public void onReceiveImagePath(String imagePath) {
       Log.v(TAG, "Image path received: " + imagePath);
