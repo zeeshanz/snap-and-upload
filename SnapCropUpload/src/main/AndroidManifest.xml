@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jixte.snapandupload">
+    package="com.jixte.snapcropupload">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
 
         <activity android:name=".PhotoActivity" />
         <receiver
-            android:name=".SnapAndUpload"
+            android:name=".SnapCropUpload"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.m2x.test.intent.MESSAGE_RECEIVED" />

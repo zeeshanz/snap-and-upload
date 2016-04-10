@@ -1,4 +1,4 @@
-package com.jixte.snapandupload;
+package com.jixte.snapcropupload;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.util.Log;
  * Created by Zeeshan A Zakaria on 2016-04-09.
  * www.zeeshanz.com
  */
-public class SnapAndUpload extends BroadcastReceiver {
-    static ISnapAndUploadListener mListener;
+public class SnapCropUpload extends BroadcastReceiver {
+    static ISnapCropUploadListener mListener;
 
     /**
      * Calling the module with a callback. This call back returns the path of the image saved locally. See
@@ -27,7 +27,7 @@ public class SnapAndUpload extends BroadcastReceiver {
      * @param listener      This callback will return the path of the final image. You might need this to display the image as a thumbnail.
      */
 
-    public void setListener(Context context, String imageFolder, int cropWidth, int cropHeight, int imageType, String url, boolean overwrite, ISnapAndUploadListener listener) {
+    public void setListener(Context context, String imageFolder, int cropWidth, int cropHeight, int imageType, String url, boolean overwrite, ISnapCropUploadListener listener) {
         mListener = listener;
         Intent intent = new Intent(context, PhotoActivity.class);
         intent.putExtra(Constants.IMAGE_FOLDER, imageFolder);

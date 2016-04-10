@@ -1,4 +1,4 @@
-package com.jixte.snapanduploadsample;
+package com.jixte.snapcropupload;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

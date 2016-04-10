@@ -1,4 +1,4 @@
-package com.jixte.snapandupload;
+package com.jixte.snapcropupload;
 
 import org.junit.Test;
 

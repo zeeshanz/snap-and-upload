@@ -1,4 +1,4 @@
-package com.jixte.snapanduploadsample;
+package com.jixte.snapcropuploadsample;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jixte.snapandupload.ISnapAndUploadListener;
-import com.jixte.snapandupload.SnapAndUpload;
+import com.jixte.snapcropupload.ISnapCropUploadListener;
+import com.jixte.snapcropupload.SnapCropUpload;
 
 import java.io.File;
 
@@ -23,7 +23,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    SnapAndUpload mListener;
+    SnapCropUpload mListener;
     ImageView ivImage;
     Button mButton;
     static final String TAG = "SNU";
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener = new SnapAndUpload();
-                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapAndUploadListener() {
+                mListener = new SnapCropUpload();
+                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
                             @Override
                             public void onReceiveImagePath(String imagePath) {
                                 Log.v(TAG, "Image path received: " + imagePath);
