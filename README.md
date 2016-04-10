@@ -1,9 +1,9 @@
 # Zeeshanz Snap-And-Upload Module
 
-To make life easier for anyone wanting to easily take photos, crop, and upload to their server, I decided to write this module. You can integrate it into your app, and call it just usng one line of code. This module will open a dialog box allowing you to take a photo, or select one from your library, and then it'll crop and upload to your server. There are a few good options to control the functionality of this module which I have explained below.
+To make life easier for anyone wanting to easily take photos, crop, and upload to their server, I decided to write this module. You can integrate it into your app, and call it just using one line of code. This module will open a dialog box allowing you to take a photo, or select one from your library, and then it'll crop and upload to your server. There are a few good options to control the functionality of this module which I have explained below. Please note that the min SDK version is 21.
 
 # Why I Wrote This Module
-I wanted this functionality in my own apps, i.e. Foodisfy and JixtēLogs, but couldn't find any working code or examples anywhere. All the code I found online on various websites, blogs, answers, tutorials, etc. were obsolete, incomplete, or simply not working. Long story short, I couldn't find anything but found a lot of people asking for similar functionality, so I decided to write this code as an independent module, which could be intergrated into any app, and publish it here for anyone who could benefit from it. I have tested this code on Nexus 6P with Android M, and it works as intended. I'll be improving it further with time
+I wanted this functionality in my own apps, i.e. Foodisfy and JixtēLogs, but couldn't find any working code or examples anywhere. All the code I found online on various websites, blogs, answers, tutorials, etc. were obsolete, incomplete, or simply not working. Long story short, I couldn't find anything but found a lot of people asking for similar functionality. So I decided to write this code as an independent module, which could be intergrated into any app, and publish it here for anyone who could benefit from it. I have tested this code on Nexus 6P with Android M, and it works as intended. I'll be improving it further with time
 
 # What It Does
 This module allows you to snap a photo, crop and upload to your server, just in one line of code. You can also select photos from your photo libraries. Refer to the sample to see it working.
@@ -83,3 +83,6 @@ enctype="multipart/form-data">
 
 </body>
 </html>
+
+# What's Next
+I'll be improving on this code. Currently it doesn't check for the network connection, or doesn't try to re-upload the images if network is down. I plan to add this functionality. Also, the uploads will go into a service, and an AlarmManager will be incorporated to run this service every minutes in case of network issues. I like to kill the services when they are not needed, and have found AlarmManager a good way for this purpose.
