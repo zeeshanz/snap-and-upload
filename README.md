@@ -85,4 +85,4 @@ enctype="multipart/form-data">
 </html>
 
 # What's Next
-I'll be improving on this code. Currently it doesn't check for the network connection, or doesn't try to re-upload the images if network is down. I plan to add this functionality. Also, the uploads will go into a service, and an AlarmManager will be incorporated to run this service every minutes in case of network issues. I like to kill the services when they are not needed, and have found AlarmManager a good way for this purpose.
+I'll be improving on this code. Currently it doesn't check for the network connection, or doesn't try to re-upload the images if network is down. I plan to add this functionality. Also, the uploads will go into a service, and an AlarmManager will be incorporated to run this service every minute in case of network issues. I like to kill the services when they are not needed, and have found using AlarmManager a good way for this purpose.
