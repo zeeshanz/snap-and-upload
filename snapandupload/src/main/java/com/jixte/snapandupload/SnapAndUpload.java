@@ -22,7 +22,9 @@ public class SnapAndUpload extends BroadcastReceiver {
      * @param cropWidth     the crop width in pixels. A value of 0 will result in no crop.
      * @param cropHeight    the crop height in pixels. A value of 0 will result in no crop.
      * @param imageType     the image output type: 0 is JPG, 1 is PNG, 2 is BMP
-     * @param url           the URL where to uploadImageToTheServer the image
+     * @param url           the URL where to upload the image
+     * @param overwrite     set it to true if you want to over write the image everytime, otherwise set it to false.
+     * @param listener      This callback will return the path of the final image. You might need this to display the image as a thumbnail.
      */
 
     public void setListener(Context context, String imageFolder, int cropWidth, int cropHeight, int imageType, String url, boolean overwrite, ISnapAndUploadListener listener) {
@@ -55,7 +57,7 @@ public class SnapAndUpload extends BroadcastReceiver {
      * @param cropWidth     the crop width in pixels. A value of 0 will result in no crop.
      * @param cropHeight    the crop height in pixels. A value of 0 will result in no crop.
      * @param imageType     the image output type: 0 is JPG, 1 is PNG, 2 is BMP
-     * @param url           the URL where to uploadImageToTheServer the image
+     * @param url           the URL where to upload the image
      */
     public static void init(Context context, String imageFolder, int cropWidth, int cropHeight, int imageType, String url, boolean overwrite) {
         Intent intent = new Intent(context, PhotoActivity.class);
