@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
     boolean mOverwriteImage;
     Button mGoBackButton;
     IPhotoActivityPresenter mPresenter;
+    boolean mMoveToInternalStorage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,8 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
         setContentView(R.layout.activity_photo_upload);
         mGoBackButton = (Button) findViewById(R.id.b_go_back);
         mPresenter = new PhotoActivityPresenterImpl(this);
-        setupVariables();
         verifyPermissions(this);
+        setupVariables();
         selectImageSourceDialog();
         mPresenter.setServerUrl(mUrl);
 
@@ -62,6 +64,12 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
         mImageType = intent.getIntExtra(Constants.IMAGE_TYPE, 0);
         mUrl = intent.getStringExtra(Constants.URL);
         mOverwriteImage = intent.getBooleanExtra(Constants.OVERWRITE_IMAGE, true);
+        mMoveToInternalStorage = (mImageFolder == null || mImageFolder.isEmpty());
+        mImageFolder =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()
+                        + ""
+                        + ((mImageFolder == null || mImageFolder.isEmpty()) ? "" : "/" + mImageFolder)
+                        + "/";
     }
 
     /**
@@ -159,6 +167,17 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
 
     @Override
     public void broadcastImagePath(String imagePath) {
+
+        if (mMoveToInternalStorage) {
+            String newPath = getFilesDir().getAbsolutePath() + "/image.jpg";
+            Utils.copyFile(imagePath, newPath);
+            File file = new File(imagePath);
+            if (file.delete()) {
+                Log.v(Constants.TAG, "deleted: " + imagePath);
+            }
+            imagePath = newPath;
+        }
+
         Intent intent = new Intent();
         intent.setAction("com.m2x.test.intent.MESSAGE_RECEIVED");
         intent.putExtra(Constants.IMAGE_PATH, imagePath);
@@ -172,18 +191,18 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
      *
      * @param activity  the activity
      */
-    public static void verifyPermissions(Activity activity) {
-        // Storage write/read permission
-        String[] PERMISSIONS_STORAGE = {
+    public void verifyPermissions(Activity activity) {
+        // Check for camera and storage permissions
+        String[] PERMISSIONS = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
         };
 
-        if (ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            )
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, 1);
+        if ((ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                )
+            ActivityCompat.requestPermissions(activity, PERMISSIONS, 1);
     }
 
     @Override
@@ -197,9 +216,9 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
         }
 
         if (initialFile != null) {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(initialFile));
-            startActivityForResult(takePictureIntent, IMAGE_FROM_CAMERA);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(initialFile));
+            startActivityForResult(intent, IMAGE_FROM_CAMERA);
         }
     }
 

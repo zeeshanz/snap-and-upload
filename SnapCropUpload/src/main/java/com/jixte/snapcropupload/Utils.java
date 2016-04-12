@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.DataOutputStream;
@@ -15,6 +14,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -65,19 +65,11 @@ public final class Utils {
         String imageFileName;
         String fileExtension;
         File imageFile;
-        String storageDirectoryPath =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()
-                        + ""
-                        + (imageFolder == null ? "" : "/" + imageFolder)
-                        + "/";
+        File storageDir = new File (imageFolder);
 
-        File storageDir = new File (storageDirectoryPath);
-
-        if (imageFolder != null) {
-            if(!storageDir.exists()) {
-                if (storageDir.mkdir()) {
-                    Log.d(Constants.TAG, "Created new image folder: " + imageFolder);
-                }
+        if(!storageDir.exists()) {
+            if (storageDir.mkdir()) {
+                Log.d(Constants.TAG, "Created new image folder: " + imageFolder);
             }
         }
 
@@ -93,9 +85,9 @@ public final class Utils {
         }
 
         if (overwriteImage) {
-            imageFileName = "photo" + (tempOrFinal.equals("temp") ? "_" : "") + fileExtension;
+            imageFileName = "/photo" + (tempOrFinal.equals("temp") ? "_" : "") + fileExtension;
             File oldImageFile = new File(imageFileName);
-            imageFile = new File(storageDirectoryPath + imageFileName);
+            imageFile = new File(imageFolder + imageFileName);
             if(oldImageFile.exists()) {
                 if (oldImageFile.delete()) {
                     Log.d(Constants.TAG, "old image deleted");
@@ -177,9 +169,9 @@ public final class Utils {
             Bitmap croppedImage = BitmapFactory.decodeFile(imagePath);
 
             if (croppedImage != null) {
-                croppedImage = Utils.scaleCenterCrop(croppedImage, cropWidth, cropHeight);
+                croppedImage = scaleCenterCrop(croppedImage, cropWidth, cropHeight);
                 try {
-                    finalImage = Utils.createImageFile("", imageFolder, imageType, overwriteImage);
+                    finalImage = createImageFile("", imageFolder, imageType, overwriteImage);
 
                     if (finalImage != null) {
                         finalImagePath = finalImage.getAbsolutePath();
@@ -295,5 +287,27 @@ public final class Utils {
             e.printStackTrace();
         }
         return serverResponseCode;
+    }
+
+    /**
+     * Move files from the external storage to the internal storage
+     *
+     * @param src       the image source
+     * @param dst       the image destination
+     * @throws IOException
+     */
+    public static void copyFile(File src, File dst) throws IOException {
+        FileChannel inChannel = new FileInputStream(src).getChannel();
+        FileChannel outChannel = new FileOutputStream(dst).getChannel();
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        }
+        finally
+        {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
+        }
     }
 }

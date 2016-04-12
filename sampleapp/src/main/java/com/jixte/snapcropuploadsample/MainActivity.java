@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mListener = new SnapCropUpload();
-                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
+                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, false, new ISnapCropUploadListener() {
                             @Override
                             public void onReceiveImagePath(String imagePath) {
                                 Log.v(TAG, "Image path received: " + imagePath);
