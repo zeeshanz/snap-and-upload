@@ -33,7 +33,7 @@ mListener = new SnapCropUpload();
 
 # Options
 1. context - the calling application's context
-2. imageFolder - the subfolder under Pictures folder where the images will be stored. Leave it null for no subfolder.
+2. imageFolder - the subfolder under Pictures folder where the images will be stored. Leave it null for no subfolder. When null, the images will be stored in calling app's internal storage, which is the main files folder.
 3. cropWidth - the crop width in pixels. A value of 0 will result in no crop.
 4. cropHeight - the crop height in pixels. A value of 0 will result in no crop.
 5. imageType - the image output type: 0 is JPG, 1 is PNG, 2 is BMP
