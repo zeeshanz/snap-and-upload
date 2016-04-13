@@ -166,24 +166,33 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
     }
 
     @Override
-    public void broadcastImagePath(String imagePath) {
+    public void returnImagePath(String imagePath) {
 
         if (mMoveToInternalStorage) {
-            String newPath = getFilesDir().getAbsolutePath() + "/image.jpg";
+            String newPath;
+            if (mOverwriteImage)
+                newPath = getFilesDir().getAbsolutePath() + "/image.jpg";
+            else {
+                String filename = imagePath.substring(imagePath.lastIndexOf("/"));
+                newPath = getFilesDir().getAbsolutePath() + filename;
+            }
+
             Utils.copyFile(imagePath, newPath);
             File file = new File(imagePath);
             if (file.delete()) {
                 Log.v(Constants.TAG, "deleted: " + imagePath);
             }
             imagePath = newPath;
+            mPresenter.uploadImageToServer(imagePath);
         }
+
 
         Intent intent = new Intent();
         intent.setAction("com.m2x.test.intent.MESSAGE_RECEIVED");
         intent.putExtra(Constants.IMAGE_PATH, imagePath);
+        Log.d(Constants.TAG, "Broadcasting image path: " + imagePath);
         sendBroadcast(intent);
 //        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        Log.d(Constants.TAG, "Broadcasting image path: " + imagePath);
         finish();
     }
 

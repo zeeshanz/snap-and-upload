@@ -42,9 +42,7 @@ public class PhotoActivityPresenterImpl implements IPhotoActivityPresenter {
 
     @Override
     public String processImage() {
-        String processedImagePath = mPhotoActivityView.rescaleCropAndSave();
-        mPhotoModel.setmImagePath(processedImagePath);
-        return processedImagePath;
+        return mPhotoActivityView.rescaleCropAndSave();
     }
 
     @Override
@@ -54,13 +52,7 @@ public class PhotoActivityPresenterImpl implements IPhotoActivityPresenter {
 
     @Override
     public void imageProcessingComplete(String imagePath) {
-        mPhotoActivityView.broadcastImagePath(imagePath);
-        uploadImageToTheServer();
-    }
-
-    @Override
-    public void uploadPhotoButtonClicked() {
-        mPhotoActivityView.startCamera();
+        mPhotoActivityView.returnImagePath(imagePath);
     }
 
     /**
@@ -74,5 +66,11 @@ public class PhotoActivityPresenterImpl implements IPhotoActivityPresenter {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void uploadImageToServer(String imagePath) {
+        mPhotoModel.setmImagePath(imagePath);
+        uploadImageToTheServer();
     }
 }

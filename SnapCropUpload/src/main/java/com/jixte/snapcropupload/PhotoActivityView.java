@@ -12,6 +12,6 @@ public interface PhotoActivityView {
     void openGallery();
     void cancel(DialogInterface dialog);
     void finishActivity();
-    void broadcastImagePath(String imagePath);
+    void returnImagePath(String imagePath);
     String rescaleCropAndSave();
 }

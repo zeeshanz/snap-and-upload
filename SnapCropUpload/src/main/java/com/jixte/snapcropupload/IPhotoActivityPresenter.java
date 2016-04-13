@@ -11,7 +11,7 @@ public interface IPhotoActivityPresenter {
     void takePhotoOptionClicked();
     void openGalleryOptionClicked();
     void cancelOptionClicked(DialogInterface dialog);
-    void uploadPhotoButtonClicked();
+    void uploadImageToServer(String imagePath);
     void goBackButtonPresses();
     void setServerUrl(String url);
     void imageProcessingComplete(String imagePath);
