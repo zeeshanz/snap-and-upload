@@ -41,12 +41,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mListener = new SnapCropUpload();
                 mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
-                            @Override
-                            public void onReceiveImagePath(String imagePath) {
-                                Log.v(TAG, "Image path received: " + imagePath);
-                                displayImage(imagePath);
-                            }
+                        @Override
+                        public void onReceiveImagePath(String imagePath) {
+                            Log.v(TAG, "Image path received: " + imagePath);
+                            String tnail = SnapCropUpload.makeThumbnail(imagePath, 225);
+                            if (tnail != null)
+                                displayImage(tnail);
                         }
+                    }
                 );
             }
         });

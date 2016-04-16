@@ -3,7 +3,11 @@ package com.jixte.snapcropupload;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import java.io.File;
 
 /**
  *
@@ -68,5 +72,37 @@ public class SnapCropUpload extends BroadcastReceiver {
         intent.putExtra(Constants.URL, url);
         intent.putExtra(Constants.OVERWRITE_IMAGE, overwrite);
         context.startActivity(intent);
+    }
+
+    /**
+     * Generate a thumbnail
+     *
+     * @param imagePath the source file
+     * @param dimension the thumbnail dimension
+     * @return          the thumbnail path
+     */
+    public static String makeThumbnail(String imagePath, int dimension) {
+        Bitmap bitmap = Utils.scaleCenterCrop(BitmapFactory.decodeFile(imagePath), dimension, dimension);
+        return Utils.createThumbnailFile(bitmap, imagePath);
+    }
+
+    /**
+     * Delete image and its thumbnail
+     *
+     * @param imagePath the image path
+     * @return          the success of failure flag
+     */
+    public static boolean deleteImage(String imagePath) {
+        File imageFile = new File(imagePath);
+        String directoryPath = imageFile.getParent();
+        String thumbnail = directoryPath + "/t_" + imagePath.substring(imagePath.lastIndexOf("/") + 1);
+        File thumbnailFile = new File(thumbnail);
+
+        if (thumbnailFile.delete() && thumbnailFile.delete()) {
+            Log.v(Constants.TAG, "deleted: " + imagePath);
+            return true;
+        }
+
+        return false;
     }
 }

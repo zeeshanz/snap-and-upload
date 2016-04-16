@@ -53,6 +53,29 @@ public final class Utils {
     }
 
     /**
+     *
+     * @param bitmap    the image bitmap
+     * @param imagePath the image absolute path
+     * @return          the thumbnail path. Null if operation failed
+     */
+    public static String createThumbnailFile(Bitmap bitmap, String imagePath) {
+        File file = new File(imagePath);
+        String directoryPath = file.getParent();
+        String thumbnailPath = directoryPath + "/t_" + imagePath.substring(imagePath.lastIndexOf("/") + 1);
+        try {
+            FileOutputStream fos = new FileOutputStream(thumbnailPath);
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)) {
+                fos.close();
+                return thumbnailPath;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
      * Create image file names, depending upon if they are temporary names or final.
      *
      * tempOrFinal  flag to determine if the name is temporary or final
