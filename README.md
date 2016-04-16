@@ -31,6 +31,9 @@ mListener = new SnapCropUpload();
 }
 });
 
+3. To delete a file, call the SnapCropUpload.delete(<filename>) method
+4. To create a thumbnail, call the SnapCropUpload.makeThumbnail(String imagePath, int dimension) method.
+
 # Options
 1. context - the calling application's context
 2. imageFolder - the subfolder under Pictures folder where the images will be stored. Leave it null for no subfolder. When null, the images will be stored in calling app's internal storage, which is the main files folder.
