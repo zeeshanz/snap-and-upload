@@ -60,7 +60,7 @@ SnapCropUpload.makeThumbnail(Uri imageUri, int dimension)
 7. `overwrite` -  set it to true if you want to over write the image everytime, otherwise set it to false.
 8. `listener` - This callback will return the Uri of the final image. You might need this to display the image as a thumbnail.
 
-Since Android API 24 it is not allowed to use `file://` outside the package domain, so I have updated the code to use `Uri` for image paths. You can easily extract path from the `URI`s as `myUri.getPath()`.
+Since Android API 24 it is not allowed to use `file://` outside the package domain, so I have updated the code to use `Uri` for image paths. You can easily extract path from a `Uri` using `myUri.getPath()`.
 
 # The PHP Script
 If you are using a PHP server to receive the files, you can use this this PHP which I am using on my server. Please make sure your uploads/ directory has the necessary permissions for the web user to write to it. I have this folder set with permissions 700.
