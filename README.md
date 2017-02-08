@@ -16,10 +16,10 @@ This module allows you to snap a photo, crop and upload to your server, just in 
 # How To Use It
 Import the module into your main project and add it as a dependency of your main project. Once done, all you have to do is one of the following:
 
-1. Just call a static method like this:
-
+- Just call a static method like this:
 ```init(context, imageFolder, cropWidth, cropHeight, imageType, url, overwrite)```
-2. Or call it with a callback listener like the following example:
+
+- Or call it with a callback listener like the following example:
 
 ```SnapCropUpload mListener;
 mListener = new SnapCropUpload();
@@ -33,8 +33,9 @@ mListener = new SnapCropUpload();
 }
 });
 ```
-3. To delete a file, call the ```SnapCropUpload.delete(<filename>)``` method
-4. To create a thumbnail, call the ```SnapCropUpload.makeThumbnail(String imagePath, int dimension)``` method.
+- To delete a file, call the ```SnapCropUpload.delete(<filename>)``` method
+
+- To create a thumbnail, call the ```SnapCropUpload.makeThumbnail(String imagePath, int dimension)``` method.
 
 # Options
 1. ```context``` - the calling application's context
