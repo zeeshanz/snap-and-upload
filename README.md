@@ -38,7 +38,11 @@ mListener = new SnapCropUpload();
 });
 ```
 
-- To delete a file : `SnapCropUpload.delete(<filename>)`
+- To delete a file:
+
+```java
+SnapCropUpload.delete(<filename>)
+```
 
 - To create a thumbnail:
 
@@ -57,7 +61,7 @@ SnapCropUpload.makeThumbnail(String imagePath, int dimension)
 8. `listener` - This callback will return the path of the final image. You might need this to display the image as a thumbnail.
 
 # The PHP Script
-If you are using a PHP server to receive the files, you can use this this PHP which I am using on my server. Please make sure your uploads/ directory has the necessary permissions for the web user to write to it. I have this folder set as 700.
+If you are using a PHP server to receive the files, you can use this this PHP which I am using on my server. Please make sure your uploads/ directory has the necessary permissions for the web user to write to it. I have this folder set with permissions 700.
 
 ```php
 <?php
@@ -100,6 +104,3 @@ enctype="multipart/form-data">
 </body>
 </html>
 ```
-
-# What's Next
-I'll be improving on this code. Currently it doesn't check for the network connection, or doesn't try to re-upload the images if network is down. I plan to add this functionality. Also, the uploads will go into a service, and an AlarmManager will be incorporated to run this service every minute in case of network issues. I like to kill the services when they are not needed, and have found using AlarmManager a good way for this purpose.
