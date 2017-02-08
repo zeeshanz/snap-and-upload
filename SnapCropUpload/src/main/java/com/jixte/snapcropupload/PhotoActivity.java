@@ -3,6 +3,8 @@ package com.jixte.snapcropupload;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -226,8 +228,14 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
 
         if (initialFile != null) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(initialFile));
-            startActivityForResult(intent, IMAGE_FROM_CAMERA);
+            try {
+//                Uri uri = FileProvider.getUriForFile(PhotoActivity.this, BuildConfig.APPLICATION_ID + ".provider", initialFile);
+                Uri uri = Utils.getImageContentUri(this, initialFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(intent, IMAGE_FROM_CAMERA);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

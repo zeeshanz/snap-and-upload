@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.File;
@@ -48,7 +49,7 @@ public class SnapCropUpload extends BroadcastReceiver {
         if (intent.getAction().equals("com.m2x.test.intent.MESSAGE_RECEIVED")) {
             String imagePath = intent.getStringExtra(Constants.IMAGE_PATH);
             if (mListener != null)
-                mListener.onReceiveImagePath(imagePath);
+                mListener.onReceiveImagePath(Uri.fromFile(new File(imagePath)));
             Log.d(Constants.TAG, "imagePath: " + imagePath);
         }
     }
@@ -81,9 +82,11 @@ public class SnapCropUpload extends BroadcastReceiver {
      * @param dimension the thumbnail dimension
      * @return          the thumbnail path
      */
-    public static String makeThumbnail(String imagePath, int dimension) {
-        Bitmap bitmap = Utils.scaleCenterCrop(BitmapFactory.decodeFile(imagePath), dimension, dimension);
-        return Utils.createThumbnailFile(bitmap, imagePath);
+    public static Uri makeThumbnail(Context c, Uri imagePath, int dimension) {
+        String path = imagePath.getPath();
+        Bitmap bitmap = Utils.scaleCenterCrop(BitmapFactory.decodeFile(path), dimension, dimension);
+        String r = Utils.createThumbnailFile(bitmap, path);
+        return Utils.getImageContentUri(c, new File(r));
     }
 
     /**

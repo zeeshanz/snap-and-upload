@@ -1,9 +1,14 @@
 package com.jixte.snapcropupload;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.DataOutputStream;
@@ -23,7 +28,7 @@ import java.util.Locale;
  * Created by Zeeshan A Zakaria on 2016-04-08.
  * www.zeeshanz.com
  */
-public final class Utils {
+final class Utils {
     /**
      * Since we don't want to modify the original gallery files, so we'll copy the original to a
      * temporary location first and then modify the copied one.
@@ -31,7 +36,7 @@ public final class Utils {
      * @param sourceFile    the source file
      * @param destFile      the destination file
      */
-    public static boolean copyFile(String sourceFile, String destFile) {
+    static boolean copyFile(String sourceFile, String destFile) {
         try {
             FileInputStream in = new FileInputStream(sourceFile);
             FileOutputStream out = new FileOutputStream(destFile);
@@ -58,7 +63,7 @@ public final class Utils {
      * @param imagePath the image absolute path
      * @return          the thumbnail path. Null if operation failed
      */
-    public static String createThumbnailFile(Bitmap bitmap, String imagePath) {
+    static String createThumbnailFile(Bitmap bitmap, String imagePath) {
         File file = new File(imagePath);
         String directoryPath = file.getParent();
         String thumbnailPath = directoryPath + "/t_" + imagePath.substring(imagePath.lastIndexOf("/") + 1);
@@ -83,7 +88,7 @@ public final class Utils {
      * @return  the filename
      * @throws IOException
      */
-    public static File createImageFile(String tempOrFinal, String imageFolder, int imageType, boolean overwriteImage) throws IOException {
+    static File createImageFile(String tempOrFinal, String imageFolder, int imageType, boolean overwriteImage) throws IOException {
         String imageFileName;
         String fileExtension;
         File imageFile;
@@ -108,12 +113,15 @@ public final class Utils {
 
         if (overwriteImage) {
             imageFileName = "/photo" + (tempOrFinal.equals("temp") ? "_" : "") + fileExtension;
-            File oldImageFile = new File(imageFileName);
-            imageFile = new File(imageFolder + imageFileName);
+            File oldImageFile = new File(imageFolder + imageFileName);
             if(oldImageFile.exists()) {
                 if (oldImageFile.delete()) {
                     Log.d(Constants.TAG, "old image deleted");
                 }
+            }
+            imageFile = new File(imageFolder + imageFileName);
+            if (!imageFile.exists()) {
+                imageFile.createNewFile();
             }
         }
         else {
@@ -137,7 +145,7 @@ public final class Utils {
      * @param cropHeight    the height of the cropped source
      * @return              the returned image
      */
-    public static Bitmap scaleCenterCrop(Bitmap source, int cropWidth, int cropHeight) {
+    static Bitmap scaleCenterCrop(Bitmap source, int cropWidth, int cropHeight) {
 
         int sourceWidth = source.getWidth();
         int sourceHeight = source.getHeight();
@@ -183,7 +191,7 @@ public final class Utils {
      * @param overwriteImage    the flag whether to overwrite the previous image
      * @return                  the String value of the path to the new and final image
      */
-    public static String processImage(String imagePath, int cropWidth, int cropHeight, String imageFolder, int imageType, boolean overwriteImage) {
+    static String processImage(String imagePath, int cropWidth, int cropHeight, String imageFolder, int imageType, boolean overwriteImage) {
         File tempImage = new File(imagePath).getAbsoluteFile();
         String finalImagePath = null;
         if (tempImage.canRead()) {
@@ -233,7 +241,7 @@ public final class Utils {
      * @param uploadServerUri   the server URL where to upload the file
      * @return                  the response code
      */
-    public static int uploadFile(String sourceFileUri, String uploadServerUri) {
+    static int uploadFile(String sourceFileUri, String uploadServerUri) {
         int serverResponseCode = 0;
         HttpURLConnection conn;
         DataOutputStream dos;
@@ -309,5 +317,35 @@ public final class Utils {
             e.printStackTrace();
         }
         return serverResponseCode;
+    }
+
+    /**
+     * Converts a file to a content uri, by inserting it into the media store.
+     * Requires this permission: <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+     * http://stackoverflow.com/questions/7305504/convert-file-uri-to-content-uri
+     */
+    static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
     }
 }

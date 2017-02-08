@@ -2,6 +2,7 @@ package com.jixte.snapcropuploadsample;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -40,15 +41,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mListener = new SnapCropUpload();
-                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
-                    @Override
-                    public void onReceiveImagePath(String imagePath) {
-                        Log.v(TAG, "Image path received: " + imagePath);
-                        String tnail = SnapCropUpload.makeThumbnail(imagePath, 225);
-                        if (tnail != null)
-                            displayImage(tnail);
-                    }
-                });
+                try {
+                    mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
+                        @Override
+                        public void onReceiveImagePath(Uri imageUri) {
+                            Log.v(TAG, "Image path received: " + imageUri);
+                            Uri tnail = SnapCropUpload.makeThumbnail(MainActivity.this, imageUri, 225);
+                            if (tnail != null)
+                                displayImage(imageUri);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -56,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      *  Display image
      */
-    public void displayImage(String imagePath) {
+    public void displayImage(Uri imageUri) {
+        String imagePath = imageUri.getPath();
         Bitmap image = BitmapFactory.decodeFile(imagePath.replace("file:", ""));
         if (image != null)
             ivImage.setImageBitmap(image);
