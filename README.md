@@ -17,11 +17,15 @@ This module allows you to snap a photo, crop and upload to your server, just in 
 Import the module into your main project and add it as a dependency of your main project. Once done, all you have to do is one of the following:
 
 - Just call a static method like this:
-```init(context, imageFolder, cropWidth, cropHeight, imageType, url, overwrite)```
+
+```java
+init(context, imageFolder, cropWidth, cropHeight, imageType, url, overwrite)
+```
 
 - Or call it with a callback listener like the following example:
 
-```SnapCropUpload mListener;
+```java
+SnapCropUpload mListener;
 mListener = new SnapCropUpload();
   mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
     @Override
@@ -33,23 +37,29 @@ mListener = new SnapCropUpload();
 }
 });
 ```
-- To delete a file, call the ```SnapCropUpload.delete(<filename>)``` method
 
-- To create a thumbnail, call the ```SnapCropUpload.makeThumbnail(String imagePath, int dimension)``` method.
+- To delete a file : `SnapCropUpload.delete(<filename>)`
+
+- To create a thumbnail:
+
+```java
+SnapCropUpload.makeThumbnail(String imagePath, int dimension)
+```
 
 # Options
-1. ```context``` - the calling application's context
-2. ```imageFolder``` - the subfolder under Pictures folder where the images will be stored. Leave it null for no subfolder. When null, the images will be stored in calling app's internal storage, which is the main files folder.
-3. ```cropWidth``` - the crop width in pixels. A value of 0 will result in no crop.
-4. ```cropHeight``` - the crop height in pixels. A value of 0 will result in no crop.
-5. ```imageType``` - the image output type: 0 is JPG, 1 is PNG, 2 is BMP
-6. ```url``` - the URL where to upload the image. Leave it null if you are not uploading.
-7. ```overwrite``` -  set it to true if you want to over write the image everytime, otherwise set it to false.
-8. ```listener``` - This callback will return the path of the final image. You might need this to display the image as a thumbnail.
+1. `context` - the calling application's context
+2. `imageFolder` - the subfolder under Pictures folder where the images will be stored. Leave it null for no subfolder. When null, the images will be stored in calling app's internal storage, which is the main files folder.
+3. `cropWidth` - the crop width in pixels. A value of 0 will result in no crop.
+4. `cropHeight` - the crop height in pixels. A value of 0 will result in no crop.
+5. `imageType` - the image output type: 0 is JPG, 1 is PNG, 2 is BMP
+6. `url` - the URL where to upload the image. Leave it null if you are not uploading.
+7. `overwrite` -  set it to true if you want to over write the image everytime, otherwise set it to false.
+8. `listener` - This callback will return the path of the final image. You might need this to display the image as a thumbnail.
 
 # The PHP Script
 If you are using a PHP server to receive the files, you can use this this PHP which I am using on my server. Please make sure your uploads/ directory has the necessary permissions for the web user to write to it. I have this folder set as 700.
-```
+
+```php
 <?php
 $path = "uploads/";
 error_reporting(E_ALL);
@@ -90,5 +100,6 @@ enctype="multipart/form-data">
 </body>
 </html>
 ```
+
 # What's Next
 I'll be improving on this code. Currently it doesn't check for the network connection, or doesn't try to re-upload the images if network is down. I plan to add this functionality. Also, the uploads will go into a service, and an AlarmManager will be incorporated to run this service every minute in case of network issues. I like to kill the services when they are not needed, and have found using AlarmManager a good way for this purpose.
