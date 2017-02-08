@@ -47,7 +47,7 @@ SnapCropUpload.delete(<filename>)
 - To create a thumbnail:
 
 ```java
-SnapCropUpload.makeThumbnail(String imagePath, int dimension)
+SnapCropUpload.makeThumbnail(Uri imageUri, int dimension)
 ```
 
 # Options
