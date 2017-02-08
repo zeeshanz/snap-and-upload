@@ -29,9 +29,9 @@ SnapCropUpload mListener;
 mListener = new SnapCropUpload();
   mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
     @Override
-    public void onReceiveImagePath(String imagePath) {
-      Log.v(TAG, "Image path received: " + imagePath);
-      // Do something with the image path
+    public void onReceiveImagePath(Uri imageUri) {
+      Log.v(TAG, "Image path received: " + imageUri.getPath());
+      // Do something with the image
     }
   });
 }
