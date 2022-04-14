@@ -2,11 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 32
-    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.jixte.snapcropuploadsample"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -21,6 +20,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:24.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation project(':SnapCropUpload')
 }
