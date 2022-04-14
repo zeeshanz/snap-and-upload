@@ -97,7 +97,6 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (resultCode == Activity.RESULT_OK) {
             Log.i(Constants.TAG, "resultCode: " + resultCode);
 
@@ -176,13 +175,11 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
             mPresenter.uploadImageToServer(imagePath);
         }
 
-
         Intent intent = new Intent();
-        intent.setAction("com.m2x.test.intent.MESSAGE_RECEIVED");
+        intent.setAction("com.jixte.snapcropupload.MESSAGE_RECEIVED");
         intent.putExtra(Constants.IMAGE_PATH, imagePath);
         Log.d(Constants.TAG, "Broadcasting image path: " + imagePath);
         sendBroadcast(intent);
-//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         finish();
     }
 

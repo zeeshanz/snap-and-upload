@@ -35,6 +35,8 @@ public class SnapCropUpload extends BroadcastReceiver {
     public void setListener(Context context, String imageFolder, int cropWidth, int cropHeight, int imageType, String url, boolean overwrite, ISnapCropUploadListener listener) {
         mListener = listener;
         Intent intent = new Intent(context, PhotoActivity.class);
+
+
         intent.putExtra(Constants.IMAGE_FOLDER, imageFolder);
         intent.putExtra(Constants.CROP_WIDTH, cropWidth);
         intent.putExtra(Constants.CROP_HEIGHT, cropHeight);
@@ -46,7 +48,7 @@ public class SnapCropUpload extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("com.m2x.test.intent.MESSAGE_RECEIVED")) {
+        if (intent.getAction().equals("com.jixte.snapcropupload.MESSAGE_RECEIVED")) {
             String imagePath = intent.getStringExtra(Constants.IMAGE_PATH);
             if (mListener != null)
                 mListener.onReceiveImagePath(Uri.fromFile(new File(imagePath)));
