@@ -39,11 +39,15 @@ public class MainActivity extends AppCompatActivity {
         mButton.setOnClickListener(view -> {
             mListener = new SnapCropUpload();
             try {
-                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, imageUri -> {
+                mListener.setListener(MainActivity.this, null, 800, 800, 0, "http://zeeshanz.com", true, imageUri -> {
                     Log.v(TAG, "Image path received: " + imageUri);
                     Uri tnail = SnapCropUpload.makeThumbnail(MainActivity.this, imageUri, 225);
-                    if (tnail != null)
+                    if (tnail != null) {
+                        Log.i(getLocalClassName(), "Image page is: " + tnail);
                         displayImage(imageUri);
+                    } else {
+                        Log.e(getLocalClassName(), "No Image path returned");
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
