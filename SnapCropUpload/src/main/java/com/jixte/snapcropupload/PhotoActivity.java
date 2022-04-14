@@ -2,7 +2,6 @@ package com.jixte.snapcropupload;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,13 +10,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 /**
  *
@@ -200,7 +201,7 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
      *
      * @param activity  the activity
      */
-    public void verifyPermissions(Activity activity) {
+    public void verifyPermissions(AppCompatActivity activity) {
         // Check for camera and storage permissions
         String[] PERMISSIONS = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
