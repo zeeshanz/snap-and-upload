@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jixte.snapcropupload">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,12 +15,16 @@
         android:supportsRtl="true">
 
         <activity android:name=".PhotoActivity" />
+
         <receiver
             android:name=".SnapCropUpload"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true"
+            android:permission="TODO"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="com.m2x.test.intent.MESSAGE_RECEIVED" />
+                <action android:name="com.jixte.snapcropupload.MESSAGE_RECEIVED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
 
