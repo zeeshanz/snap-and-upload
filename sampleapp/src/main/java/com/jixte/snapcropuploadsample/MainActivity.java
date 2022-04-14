@@ -4,17 +4,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jixte.snapcropupload.ISnapCropUploadListener;
 import com.jixte.snapcropupload.SnapCropUpload;
 
 import java.io.File;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  *
@@ -34,26 +33,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ivImage = (ImageView) findViewById(R.id.photo_holder);
-        mButton = (Button) findViewById(R.id.button);
+        ivImage = findViewById(R.id.photo_holder);
+        mButton = findViewById(R.id.button);
 
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener = new SnapCropUpload();
-                try {
-                    mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, new ISnapCropUploadListener() {
-                        @Override
-                        public void onReceiveImagePath(Uri imageUri) {
-                            Log.v(TAG, "Image path received: " + imageUri);
-                            Uri tnail = SnapCropUpload.makeThumbnail(MainActivity.this, imageUri, 225);
-                            if (tnail != null)
-                                displayImage(imageUri);
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        mButton.setOnClickListener(view -> {
+            mListener = new SnapCropUpload();
+            try {
+                mListener.setListener(MainActivity.this, null, 800, 800, 0, null, true, imageUri -> {
+                    Log.v(TAG, "Image path received: " + imageUri);
+                    Uri tnail = SnapCropUpload.makeThumbnail(MainActivity.this, imageUri, 225);
+                    if (tnail != null)
+                        displayImage(imageUri);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
