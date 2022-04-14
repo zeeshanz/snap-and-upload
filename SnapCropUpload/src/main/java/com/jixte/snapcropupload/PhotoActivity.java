@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
@@ -39,19 +38,13 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_upload);
-        mGoBackButton = (Button) findViewById(R.id.b_go_back);
+        mGoBackButton = findViewById(R.id.b_go_back);
         mPresenter = new PhotoActivityPresenterImpl(this);
         verifyPermissions(this);
         setupVariables();
         selectImageSourceDialog();
         mPresenter.setServerUrl(mUrl);
-
-        mGoBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.goBackButtonPresses();
-            }
-        });
+        mGoBackButton.setOnClickListener(view -> mPresenter.goBackButtonPresses());
     }
 
     /**
@@ -81,23 +74,20 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PhotoActivity.this);
         builder.setTitle("Add Photo!");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                mItem = items[item].toString();
+        builder.setItems(items, (dialog, item) -> {
+            mItem = items[item].toString();
 
-                switch (mItem) {
-                    case Constants.TAKE_PHOTO:
-                        mPresenter.takePhotoOptionClicked();
-                        break;
+            switch (mItem) {
+                case Constants.TAKE_PHOTO:
+                    mPresenter.takePhotoOptionClicked();
+                    break;
 
-                    case Constants.CHOOSE_FROM_LIBRARY:
-                        mPresenter.openGalleryOptionClicked();
-                        break;
+                case Constants.CHOOSE_FROM_LIBRARY:
+                    mPresenter.openGalleryOptionClicked();
+                    break;
 
-                    case Constants.CANCEL:
-                        mPresenter.cancelOptionClicked(dialog);
-                }
+                case Constants.CANCEL:
+                    mPresenter.cancelOptionClicked(dialog);
             }
         });
         builder.show();
@@ -155,7 +145,6 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
      * @param data  the image data
      * @return      the image location
      */
-    @SuppressWarnings("deprecation")
     private String getImageLocation(Intent data) {
         Uri selectedImageUri = data.getData();
         String[] projection = { MediaStore.MediaColumns.DATA };
@@ -241,7 +230,7 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
     @Override
     public void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(Intent.createChooser(intent, "Select File"), IMAGE_FROM_GALLERY);
     }
 

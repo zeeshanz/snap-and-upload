@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId "com.jixte.snapcropuploadsample"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
