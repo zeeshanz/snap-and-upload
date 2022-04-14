@@ -19,12 +19,9 @@
         <receiver
             android:name=".SnapCropUpload"
             android:enabled="true"
-            android:exported="true"
-            android:permission="TODO"
-            tools:ignore="ExportedReceiver">
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.jixte.snapcropupload.MESSAGE_RECEIVED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.jixte.snapcropupload.IMAGE_PATH"/>
             </intent-filter>
         </receiver>
 

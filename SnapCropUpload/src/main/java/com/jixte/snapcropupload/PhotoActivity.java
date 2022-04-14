@@ -175,8 +175,8 @@ public class PhotoActivity extends AppCompatActivity implements PhotoActivityVie
             mPresenter.uploadImageToServer(imagePath);
         }
 
-        Intent intent = new Intent();
-        intent.setAction("com.jixte.snapcropupload.MESSAGE_RECEIVED");
+        Intent intent = new Intent("com.jixte.snapcropupload.IMAGE_PATH");
+        intent.setPackage(getPackageName()); // From API 26 broadcasts are explicit so we need to define package name.
         intent.putExtra(Constants.IMAGE_PATH, imagePath);
         Log.d(Constants.TAG, "Broadcasting image path: " + imagePath);
         sendBroadcast(intent);
