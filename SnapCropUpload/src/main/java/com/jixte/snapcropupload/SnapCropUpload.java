@@ -47,7 +47,7 @@ public class SnapCropUpload extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(getClass().getName(), "Broadcast received");
-        if (intent.getAction().equals("com.jixte.snapcropupload.MESSAGE_RECEIVED")) {
+        if (intent.getAction().equals("com.jixte.snapcropupload.IMAGE_PATH")) {
             String imagePath = intent.getStringExtra(Constants.IMAGE_PATH);
             if (mListener != null)
                 mListener.onReceiveImagePath(Uri.fromFile(new File(imagePath)));
